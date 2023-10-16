@@ -1,5 +1,8 @@
 package com.korit.board.controller;
 
+import com.korit.board.aop.annotation.ArgAop;
+import com.korit.board.aop.annotation.ReturnAop;
+import com.korit.board.aop.annotation.TimeAop;
 import com.korit.board.aop.annotation.ValidAop;
 import com.korit.board.dto.SignupReqDto;
 import com.korit.board.exception.ValidException;
@@ -17,6 +20,9 @@ import java.util.Map;
 @RestController
 public class AuthController {
 
+    @ReturnAop
+    @ArgAop
+    @TimeAop
     @ValidAop
     @CrossOrigin
     @PostMapping("/auth/signup")
@@ -24,7 +30,6 @@ public class AuthController {
 
         System.out.println("Authcontroller!!!");
 
-        System.out.println(signupReqDto);
         return ResponseEntity.ok(true);
     }
 }

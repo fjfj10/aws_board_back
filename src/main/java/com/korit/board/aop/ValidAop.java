@@ -23,6 +23,14 @@ public class ValidAop {
     @Pointcut("@annotation(com.korit.board.aop.annotation.ValidAop)")
     private void pointCut() {};
 
+//    @Pointcut("@annotation(com.korit.board.controller.AuthController.signup(..))")
+//    private void pointCut2() {};
+//
+//    @Pointcut("@annotation(com.korit.board.controller.BoardController.register(..))")
+//    private void pointCut3() {};
+
+
+    // @Around("pointCut() || pointCut2() || pointCut3()") annotation으로 하지 않으면 pointCut위치를 일일히 지정해야함
     @Around("pointCut()")/* 포인트컷 */
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
     // getArgs(): 매개변수, getSignature(): 클래스정보
