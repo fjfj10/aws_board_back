@@ -17,13 +17,7 @@ public class AuthService {
 
     public Boolean signup(SignupReqDto signupReqDto) {
 
-        User user = User.builder()
-                .email(signupReqDto.getEmail())
-                .password(passwordEncoder.encode(signupReqDto.getPassword()))
-                .name(signupReqDto.getName())
-                .nickname(signupReqDto.getNickname())
-                .enabled(0)
-                .build();
+        User user = signupReqDto.toUserEntity(passwordEncoder);
 
         return userMapper.saveUser(user) > 0;
     }
