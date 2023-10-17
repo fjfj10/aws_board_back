@@ -34,7 +34,6 @@ public class SignupReqDto {
                 .password(passwordEncoder.encode(password))
                 .name(name)
                 .nickname(nickname)
-                .enabled(0)
                 .build();
 
         return user;
