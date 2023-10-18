@@ -9,6 +9,8 @@ import com.korit.board.exception.DuplicateException;
 import com.korit.board.jwt.JwtProvider;
 import com.korit.board.repository.UserMapper;
 import com.korit.board.security.PrincipalProvider;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -71,5 +73,13 @@ public class AuthService {
         String accessToken = jwtProvider.generateToken(authentication);
 
         return accessToken;
+    }
+
+    public boolean authenticate(String token) {
+        Claims claims = jwtProvider.getClaims(token);
+        if (claims == null) {
+            throw new JwtException("인증 토큰 유효성 검사 실패");
+        }
+        return Boolean.parseBoolean(claims.get("enabled").toString());
     }
 }

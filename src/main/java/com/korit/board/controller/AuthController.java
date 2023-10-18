@@ -11,10 +11,7 @@ import com.korit.board.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -36,10 +33,15 @@ public class AuthController {
 
     @ArgAop
     @PostMapping("/auth/signin")
-    public ResponseEntity<?> signgin(@RequestBody SigninReqDto signinReqDto) {
+    public ResponseEntity<?> signin(@RequestBody SigninReqDto signinReqDto) {
 
         return ResponseEntity.ok(authService.signin(signinReqDto));
     }
 
+    @GetMapping("/auth/token/authenticate")
+    public ResponseEntity<?> authenticate(@RequestHeader(value = "Authorization") String token) {
+
+        return ResponseEntity.ok(true);
+    }
 
 }
