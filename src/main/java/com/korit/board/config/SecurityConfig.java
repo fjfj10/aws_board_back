@@ -1,6 +1,7 @@
 package com.korit.board.config;
 
 
+import com.korit.board.filter.JwtAuthenticationFilter;
 import com.korit.board.security.PrincipalEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity  // 기존의 설정대신 이 시큐리티 정책을 따르겠다
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PrincipalEntryPoint principalEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean   // @Bean으로 외부라이브러리에서 가지고 온 BCryptPasswordEncode를 passwordEncoder이름으로 IOC에 등록
     public BCryptPasswordEncoder passwordEncoder() {
@@ -29,7 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()    // 모든 요청은 인증을 받는다
                 .antMatchers("/auth/**")
                 .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(principalEntryPoint);
 
