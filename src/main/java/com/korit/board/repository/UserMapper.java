@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 
     public int saveUser(User user);
+    public int checkDuplicate(User user);
 }
