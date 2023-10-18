@@ -1,11 +1,22 @@
 package com.korit.board.service;
 
 import com.korit.board.aop.annotation.ArgAop;
+import com.korit.board.aop.annotation.ReturnAop;
+import com.korit.board.dto.SigninReqDto;
 import com.korit.board.dto.SignupReqDto;
 import com.korit.board.entity.User;
 import com.korit.board.exception.DuplicateException;
+import com.korit.board.jwt.JwtProvider;
 import com.korit.board.repository.UserMapper;
+import com.korit.board.security.PrincipalProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +29,9 @@ public class AuthService {
 
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder passwordEncoder;
+    // AuthenticationManagerBuilder를 바로 사용하지 않고 PrincipalProvider로 직접 만들어 사용
+    private final PrincipalProvider principalProvider;
+    private final JwtProvider jwtProvider;
 
     public Boolean signup(SignupReqDto signupReqDto) {
 
@@ -47,5 +61,15 @@ public class AuthService {
                 break;
         }
         throw new DuplicateException(errorMap);
+    }
+
+    @ReturnAop
+    public String signin(SigninReqDto signinReqDto) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(signinReqDto.getEmail(), signinReqDto.getPassword());
+
+        Authentication authentication = principalProvider.authenticate(authenticationToken);
+        String accessToken = jwtProvider.generateToken(authentication);
+
+        return accessToken;
     }
 }

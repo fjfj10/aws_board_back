@@ -4,6 +4,7 @@ import com.korit.board.aop.annotation.ArgAop;
 import com.korit.board.aop.annotation.ReturnAop;
 import com.korit.board.aop.annotation.TimeAop;
 import com.korit.board.aop.annotation.ValidAop;
+import com.korit.board.dto.SigninReqDto;
 import com.korit.board.dto.SignupReqDto;
 import com.korit.board.exception.ValidException;
 import com.korit.board.service.AuthService;
@@ -26,14 +27,18 @@ public class AuthController {
     private final AuthService authService;
 
     @ArgAop
-    @TimeAop
     @ValidAop
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
 
-        authService.signup(signupReqDto);
+        return ResponseEntity.ok(authService.signup(signupReqDto));
+    }
 
-        return ResponseEntity.ok(true);
+    @ArgAop
+    @PostMapping("/auth/signin")
+    public ResponseEntity<?> signgin(@RequestBody SigninReqDto signinReqDto) {
+
+        return ResponseEntity.ok(authService.signin(signinReqDto));
     }
 
 

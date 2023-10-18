@@ -1,6 +1,8 @@
 package com.korit.board.config;
 
 
+import com.korit.board.security.PrincipalEntryPoint;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,9 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@RequiredArgsConstructor
 @EnableWebSecurity  // 기존의 설정대신 이 시큐리티 정책을 따르겠다
 @Configuration  // 설정을 IOC에 등록 @Configuration은 한번에 2개 이상의 component를 등록이 가능하다 => @Bean여러게 등록가능
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final PrincipalEntryPoint principalEntryPoint;
 
     @Bean   // @Bean으로 외부라이브러리에서 가지고 온 BCryptPasswordEncode를 passwordEncoder이름으로 IOC에 등록
     public BCryptPasswordEncoder passwordEncoder() {
@@ -23,7 +28,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()    // 모든 요청은 인증을 받는다
                 .antMatchers("/auth/**")
-                .permitAll();
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(principalEntryPoint);
 
     }
 }
