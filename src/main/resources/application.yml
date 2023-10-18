@@ -5,7 +5,15 @@ spring:
     username: root
     password: 1q2w3e4r
 
+#  mail:
+#    host:
+#    port:
+#    username:
+#    password:
+
 mybatis:
   mapper-locations:
     - /mappers/*.xml
 
+jwt:
+  secret: zBAA+1Hak/+btYh3bly6VUfDfhKTcm/4bz5xwnDUS1c=
