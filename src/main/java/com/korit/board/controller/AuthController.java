@@ -31,8 +31,6 @@ public class AuthController {
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
 
-        System.out.println("Authcontroller!!!");
-
         authService.signup(signupReqDto);
 
         return ResponseEntity.ok(true);
