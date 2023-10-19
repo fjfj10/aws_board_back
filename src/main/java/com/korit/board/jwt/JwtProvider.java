@@ -34,15 +34,14 @@ public class JwtProvider {
     public String generateToken(Authentication authentication) {
 
         String email = authentication.getName();
-        PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
         Date date = new Date(new Date().getTime() + (1000 * 60 * 60 *24));
 
+        // Jwt토큰은 공개되도 괜찮은 정보만 담는다
         return Jwts.builder()
                 .setSubject("AccessToken")
                 .setExpiration(date)
                 .claim("email", email)
-                .claim("isEnabled", principalUser.isEnabled())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**")
                 .permitAll()
                 .anyRequest()
+                // SecurityContextHolder 안에 authentication 객체(jwtAuthenticationFilter에서 만듦)가 있냐 없냐만 판단 => 없으면 PrincipalEntryPoint 예외 넘긴다
                 .authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

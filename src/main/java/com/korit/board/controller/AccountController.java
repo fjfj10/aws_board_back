@@ -16,7 +16,7 @@ public class AccountController {
     @GetMapping("/account/princlpal")
     public ResponseEntity<?> getPrincipal() {
         PrincipalUser principalUser =
-                (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  // getPrincipal = JwtProvider UsernamePasswordAuthenticationToken 만들때 넣은 PrincipalUser
         User user = principalUser.getUser();
         PrincipalRespDto principalRespDto = user.toPrincipalDto();
 
