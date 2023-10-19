@@ -82,4 +82,15 @@ public class JwtProvider {
 
         return new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
     }
+
+    public String generateAuthMailToken(String email) {
+        Date date = new Date(new Date().getTime() + 1000 * 60 * 5);     // 인증 시간 : 5분
+
+        return Jwts.builder()
+                .setSubject("AuthenticationEmailToken")
+                .setExpiration(date)
+                .claim("email", email)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
 }
