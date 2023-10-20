@@ -1,11 +1,13 @@
 package com.korit.board.service;
 
+import com.korit.board.dto.UpdateProfileImgDto;
 import com.korit.board.entity.User;
 import com.korit.board.exception.AuthMailException;
 import com.korit.board.jwt.JwtProvider;
 import com.korit.board.repository.UserMapper;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,14 @@ public class AccountService {
         }
 
         return userMapper.updateEnabledToEmail(email) > 0;
+    }
 
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateProfileImg(UpdateProfileImgDto updateProfileImgDto) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = User.builder().email(email).profileUrl(updateProfileImgDto.getProfileUrl()).build();
+
+        return  userMapper.updateProfileUrl(user) > 0;
     }
 }
