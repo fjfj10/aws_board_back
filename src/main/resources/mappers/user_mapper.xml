@@ -18,6 +18,7 @@
         insert into user_tb(user_id, email, password, name, nickname, enabled)
         values(0, #{email}, #{password}, #{name}, #{nickname}, 0)
     </insert>
+
     <update id="updateEnabledToEmail">
         update user_tb
         set
@@ -25,10 +26,19 @@
         where
             email = #{email}
     </update>
+
     <update id="updateProfileUrl" parameterType="com.korit.board.entity.User">
         update user_tb
         set
             profile_url = #{profileUrl}
+        where
+            email = #{email}
+    </update>
+
+    <update id="updatePassword" parameterType="com.korit.board.entity.User">
+        update user_tb
+        set
+            password = #{password}
         where
             email = #{email}
     </update>

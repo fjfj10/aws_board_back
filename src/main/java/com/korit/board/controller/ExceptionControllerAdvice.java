@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korit.board.aop.annotation.TimeAop;
 import com.korit.board.exception.AuthMailException;
 import com.korit.board.exception.DuplicateException;
+import com.korit.board.exception.MisMathchedPasswordException;
 import com.korit.board.exception.ValidException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
@@ -66,5 +67,12 @@ public class ExceptionControllerAdvice {
         Map<String, String> message = new HashMap<>();
         message.put("authMail", mailException.getMessage());
         return ResponseEntity.ok().body(message);
+    }
+
+    @ExceptionHandler(MisMathchedPasswordException.class)
+    public ResponseEntity<?> misMathchedPasswordException(MisMathchedPasswordException misMathchedPasswordException) {
+        Map<String, String> message = new HashMap<>();
+        message.put("misMathched", misMathchedPasswordException.getMessage());
+        return ResponseEntity.badRequest().body(message);
     }
 }
