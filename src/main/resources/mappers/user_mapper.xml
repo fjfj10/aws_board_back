@@ -11,10 +11,11 @@
         <result property="name" column="name" />
         <result property="nickname" column="nickname" />
         <result property="enabled" column="enabled" />
+        <result property="profileUrl" column="profile_url" />
     </resultMap>
 
     <insert id="saveUser" parameterType="com.korit.board.entity.User">
-        insert into user_tb
+        insert into user_tb(user_id, email, password, name, nickname, enabled)
         values(0, #{email}, #{password}, #{name}, #{nickname}, 0)
     </insert>
     <update id="updateEnabledToEmail">
@@ -50,7 +51,8 @@
             password,
             name,
             nickname,
-            enabled
+            enabled,
+            profile_url
         from
             user_tb
         where

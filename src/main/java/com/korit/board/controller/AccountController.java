@@ -32,4 +32,10 @@ public class AccountController {
 
         return ResponseEntity.ok(mailService.sendAuthMail());
     }
+
+    @PostMapping("/account/profile/img")
+    public ResponseEntity<?> updateProfileImg() {
+
+        return ResponseEntity.ok(null);
+    }
 }
