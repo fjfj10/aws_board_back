@@ -27,6 +27,10 @@ public class SignupReqDto {
     @NotBlank
     private String nickname;
 
+    private String oauth2Id;
+    private String profileImg;
+    private String provider;
+
     public User toUserEntity(BCryptPasswordEncoder passwordEncoder) {
 
         User user = User.builder()
@@ -34,6 +38,9 @@ public class SignupReqDto {
                 .password(passwordEncoder.encode(password))
                 .name(name)
                 .nickname(nickname)
+                .oauth2Id(oauth2Id)
+                .provider(provider)
+                .profileUrl(profileImg)
                 .build();
 
         return user;
