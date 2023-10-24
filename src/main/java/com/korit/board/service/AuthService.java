@@ -2,10 +2,12 @@ package com.korit.board.service;
 
 import com.korit.board.aop.annotation.ArgAop;
 import com.korit.board.aop.annotation.ReturnAop;
+import com.korit.board.dto.MergeOauthReqDto;
 import com.korit.board.dto.SigninReqDto;
 import com.korit.board.dto.SignupReqDto;
 import com.korit.board.entity.User;
 import com.korit.board.exception.DuplicateException;
+import com.korit.board.exception.MisMathchedPasswordException;
 import com.korit.board.jwt.JwtProvider;
 import com.korit.board.repository.UserMapper;
 import com.korit.board.security.PrincipalProvider;
@@ -21,6 +23,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,5 +84,18 @@ public class AuthService {
             throw new JwtException("인증 토큰 유효성 검사 실패");
         }
         return Boolean.parseBoolean(claims.get("enabled").toString());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean mergeOauth2(MergeOauthReqDto mergeOauthReqDto) {
+        User user = userMapper.findUserByEmail(mergeOauthReqDto.getEmail());
+
+        if(!passwordEncoder.matches(mergeOauthReqDto.getPassword(), user.getPassword())) {
+            // 비밀번호 일치하지 않을 시
+//            throw new MisMathchedPasswordException();     // badRequest
+            throw new BadCredentialsException("BadCredentials");    // UNAUTHORIZED
+        }
+
+        return userMapper.updateOauth2IdAndProvider(mergeOauthReqDto.toUserEntity()) > 0;
     }
 }
