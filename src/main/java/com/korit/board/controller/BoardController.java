@@ -39,4 +39,10 @@ public class BoardController {
                                          SearchBoardListReqDto searchBoardListReqDto) {
         return ResponseEntity.ok(boardService.getBoardList(categoryName, page, searchBoardListReqDto));
     }
+
+    @GetMapping("/boards/{categoryName}/count")
+    public ResponseEntity<?> getBoardCount(@PathVariable String categoryName, SearchBoardListReqDto searchBoardListReqDto) {
+
+        return ResponseEntity.ok(boardService.getBoardCount(categoryName, searchBoardListReqDto));
+    }
 }
