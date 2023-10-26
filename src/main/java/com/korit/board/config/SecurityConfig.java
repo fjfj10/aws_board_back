@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();        // WebMvnConfig의 Cors 정책을 따른다
         http.csrf().disable();
         http.authorizeRequests()    // 모든 요청은 인증을 받는다
-                .antMatchers("/auth/**", "/board/**")
+                .antMatchers("/auth/**", "/board/**", "/boards/**")
                 .permitAll()
                 .antMatchers("/board/content")
                 .authenticated()
