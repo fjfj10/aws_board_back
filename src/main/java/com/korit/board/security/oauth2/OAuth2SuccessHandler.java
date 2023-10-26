@@ -41,6 +41,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     "&name=" + URLEncoder.encode(name, "UTF-8") +
                     "&profileImage=" + profileImage +
                     "&provider=" + provider);
+            return;
         }
         // user가 있다면 토큰 발행
         PrincipalUser principalUser = new PrincipalUser(user);
