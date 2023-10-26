@@ -45,4 +45,13 @@ public class BoardController {
 
         return ResponseEntity.ok(boardService.getBoardCount(categoryName, searchBoardListReqDto));
     }
+
+
+    @GetMapping("/board/{boardId}")
+    public ResponseEntity<?> getBoard(@PathVariable int boardId) {
+
+        return ResponseEntity.ok(boardService.getBoard(boardId));
+    }
+
+ 
 }

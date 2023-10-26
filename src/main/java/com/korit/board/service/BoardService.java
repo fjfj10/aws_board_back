@@ -72,5 +72,10 @@ public class BoardService {
         return boardMapper.getBoardCount(paramsMap);
     }
 
+    public GetBoardRespDto getBoard(int boardId) {
+
+        return boardMapper.getBoardByBoardId(boardId).toBoardDto();
+    }
+
 
 }

@@ -134,6 +134,38 @@
                 </otherwise>
             </choose>
     </select>
+    <select id="getBoardByBoardId" resultMap="boardMap">
+        select
+            bt.board_id,
+            bt.board_title,
+            bt.board_category_id,
+            bt.board_content,
+            bt.email,
+            ut.nickname,
+            bt.create_date,
+            bhc.board_hits_count,
+            blc.board_like_count
+        from
+            board_tb bt
+            left outer join user_tb ut on(ut.email = bt.email)
+            left outer join (select
+                                board_id,
+                                count(*)  as board_hits_count
+                            from
+                                board_hits_tb
+                             group by
+                                board_id) bhc on(bhc.board_id = bt.board_id)
+            left outer join (select
+                                board_id,
+                                count(*)  as board_like_count
+                            from
+                                board_like_tb
+                            group by
+                                board_id) blc on(blc.board_id = bt.board_id)
+        where
+            bt.board_id = #{boardId}
+
+    </select>
 
 
 </mapper>
