@@ -34,10 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();        // WebMvnConfig의 Cors 정책을 따른다
         http.csrf().disable();
         http.authorizeRequests()    // 모든 요청은 인증을 받는다
+                .antMatchers("/board/content", "/board/like/**")
+                .authenticated()
                 .antMatchers("/auth/**", "/board/**", "/boards/**")
                 .permitAll()
-                .antMatchers("/board/content")
-                .authenticated()
                 .anyRequest()
                 // SecurityContextHolder 안에 authentication 객체(jwtAuthenticationFilter에서 만듦)가 있냐 없냐만 판단 => 없으면 PrincipalEntryPoint 예외 넘긴다
                 .authenticated()

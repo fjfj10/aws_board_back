@@ -77,5 +77,28 @@ public class BoardService {
         return boardMapper.getBoardByBoardId(boardId).toBoardDto();
     }
 
+    public boolean getLikeState(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("boardId", boardId);
+        // 로그인이 되어있지 않으면 mapper에서 false가 떠서 굳이 예외처리 안해줘도 괜찮
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
 
+        return boardMapper.getLikeState(paramsMap) > 0;
+    }
+
+    public boolean setLike(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+
+        return boardMapper.insertLike(paramsMap) > 0;
+    }
+
+    public boolean cancelLike(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+
+        return boardMapper.deleteLike(paramsMap) > 0;
+    }
 }

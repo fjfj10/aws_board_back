@@ -30,7 +30,19 @@
         insert into board_tb
         value(0, #{boardTitle}, #{boardCategoryId}, #{boardContent}, #{email}, now())
     </insert>
+    <insert id="insertLike" parameterType="hashmap" >
+        insert into board_like_tb
+        values(0, #{boardId}, #{email})
+    </insert>
 
+    <delete id="deleteLike" parameterType="hashmap">
+        delete
+        from
+            board_like_tb
+        where
+            board_id = #{boardId}
+            and email = #{email}
+    </delete>
 
     <select id="getBoardCategories" resultMap="boardCategoryMap">
         SELECT
@@ -166,6 +178,14 @@
             bt.board_id = #{boardId}
 
     </select>
-
+    <select id="getLikeState" parameterType="hashmap" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            board_like_tb
+        where
+            board_id = #{boardId}
+        and email = #{email}
+    </select>
 
 </mapper>
