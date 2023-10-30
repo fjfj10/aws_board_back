@@ -38,7 +38,7 @@ public class BoardController {
     public ResponseEntity<?> editBoard(@PathVariable int boardId,
                                        @Valid @RequestBody EditBoardReqDto editBoardReqDto,
                                        BindingResult bindingResult) {
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(boardService.editBoard(boardId, editBoardReqDto));
     }
 
     @DeleteMapping("/board/{boardId}")
