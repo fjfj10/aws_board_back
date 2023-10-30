@@ -1,6 +1,8 @@
 package com.korit.board.controller;
 
 import com.korit.board.aop.annotation.ArgAop;
+import com.korit.board.aop.annotation.ValidAop;
+import com.korit.board.dto.EditBoardReqDto;
 import com.korit.board.dto.SearchBoardListReqDto;
 import com.korit.board.dto.WriteBoardReqDto;
 import com.korit.board.service.BoardService;
@@ -10,8 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +30,20 @@ public class BoardController {
     @PostMapping("/board/content")
     public ResponseEntity<?> writeBoard(@Valid @RequestBody WriteBoardReqDto writeBoardReqDto, BindingResult bindingResult) {
         return ResponseEntity.ok(boardService.writeBoardContent(writeBoardReqDto));
+    }
+
+    @ArgAop
+    @ValidAop
+    @PutMapping("/board/{boardId}")
+    public ResponseEntity<?> editBoard(@PathVariable int boardId,
+                                       @Valid @RequestBody EditBoardReqDto editBoardReqDto,
+                                       BindingResult bindingResult) {
+        return ResponseEntity.ok(null);
+    }
+
+    @DeleteMapping("/board/{boardId}")
+    public ResponseEntity<?> deleteBoard(@PathVariable int boardId) {
+        return ResponseEntity.ok(boardService.deleteBoard(boardId));
     }
 
     @ArgAop

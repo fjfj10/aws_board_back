@@ -101,4 +101,9 @@ public class BoardService {
 
         return boardMapper.deleteLike(paramsMap) > 0;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteBoard(int boardId) {
+        return boardMapper.deleteBoard(boardId) > 0;
+    }
 }
