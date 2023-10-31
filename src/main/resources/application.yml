@@ -1,15 +1,44 @@
 spring:
+  profiles.include:
+    - secret
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            redirectUri: http://localhost:8080/login/oauth2/code/kakao  #code/사용할곳: kakao, naver, google등
+            authorizationGrantType: authorization_code
+            clientAuthenticationMethod: POST
+            clientName: Kakao   #첫글자 대문자
+          naver:
+            redirectUri: http://localhost:8080/login/oauth2/code/naver  #code/사용할곳: kakao, naver, google등
+            authorizationGrantType: authorization_code
+            clientAuthenticationMethod: POST
+            clientName: Naver   #첫글자 대문자
+
+        provider:
+          kakao:
+            authorizationUri: https://kauth.kakao.com/oauth/authorize #인가 인가가 제대로 이루어지면
+            tokenUri: https://kauth.kakao.com/oauth/token # 토큰 요청 토큰으로
+            userInfoUri: https://kapi.kakao.com/v2/user/me  #사용자 정보 받아올수있다
+            userNameAttribute: id
+          naver:
+            authorizationUri: https://nid.naver.com/oauth2.0/authorize #인가
+            tokenUri: https://nid.naver.com/oauth2.0/token # 토큰 요청
+            userInfoUri: https://openapi.naver.com/v1/nid/me  #사용자 정보 받아오기
+            userNameAttribute: response
+
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/board
-    username: root
-    password: 1q2w3e4r
+    url: jdbc:mysql://db1.csnzd0uvomsn.ap-northeast-2.rds.amazonaws.com:3306/board
+    username: admin
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: 
-    password:
+    username: kimmisuk2218@gmail.com
+    password: qfai ekhy wdni oyev
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
